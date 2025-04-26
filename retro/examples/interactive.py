@@ -129,6 +129,7 @@ class Interactive(abc.ABC):
                         keys.append(name)
 
             act = self.keys_to_act(keys)
+            print(act, keys)
 
             if not self._sync or act is not None:
                 obs, rew, terminated, truncated, _info = self._env.step(act)

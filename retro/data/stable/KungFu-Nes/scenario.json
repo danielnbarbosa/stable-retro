@@ -10,7 +10,10 @@
   "reward": {
     "variables": {
       "score": {
-        "reward": 1
+        "reward": 0.001
+      },
+      "health": {
+        "penalty": 0.1
       }
     }
   }

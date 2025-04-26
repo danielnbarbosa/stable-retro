@@ -1,5 +1,13 @@
 {
   "info": {
+    "dragon": {
+      "address": 86,
+      "type": "|u1"
+    },
+    "floor": {
+      "address": 95,
+      "type": "|u1"
+    },
     "health": {
       "address": 1190,
       "type": "|i1"
@@ -11,6 +19,14 @@
     "score": {
       "address": 1329,
       "type": ">n6"
+    },
+    "time": {
+      "address": 912,
+      "type": ">n4"
+    },
+    "top_score": {
+      "address": 1295,
+      "type": ">n8"
     }
   }
 }
