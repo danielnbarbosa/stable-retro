@@ -148,3 +148,5 @@ tests/test_cibuildwheel/tmp_dockerfiles
 *.cmake
 Makefile
 *.tmp
+
+*.bk2
