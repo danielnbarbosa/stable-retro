@@ -1,5 +1,9 @@
 {
   "info": {
+    "boss_health": {
+      "address": 1189,
+      "type": "|u1"
+    },
     "dragon": {
       "address": 86,
       "type": "|u1"
