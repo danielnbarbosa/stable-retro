@@ -2,7 +2,7 @@
   "info": {
     "boss_health": {
       "address": 1189,
-      "type": "|u1"
+      "type": "|i1"
     },
     "dragon": {
       "address": 86,
@@ -31,6 +31,10 @@
     "top_score": {
       "address": 1295,
       "type": ">n8"
+    },
+    "x_pos": {
+      "address": 115,
+      "type": "<u2"
     }
   }
 }
