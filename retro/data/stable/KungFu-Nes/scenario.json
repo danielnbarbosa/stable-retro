@@ -8,19 +8,9 @@
     }
   },
   "reward": {
-    "variables": {
-      "score": {
-        "reward": 0.001
-      },
-      "health": {
-        "penalty": 0.1
-      },
-      "boss_health": {
-        "penalty": -0.1
-      },
-      "floor": {
-        "reward": 5.0
-      }
-    }
-  }
+    "script": "lua:sum_reward"
+  },
+  "scripts": [
+    "script.lua"
+  ]
 }

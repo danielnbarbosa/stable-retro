@@ -1,0 +1,29 @@
+{
+  "done": {
+    "variables": {
+      "lives": {
+        "op": "equal",
+        "reference": 0
+      }
+    }
+  },
+  "reward": {
+    "variables": {
+      "score": {
+        "reward": 0.001
+      },
+      "health": {
+        "penalty": 0.1
+      },
+      "boss_health": {
+        "penalty": -0.1
+      },
+      "floor": {
+        "reward": 50.0
+      },
+      "lives": {
+        "penalty": 4.8
+      }
+    }
+  }
+}
