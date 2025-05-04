@@ -1,0 +1,28 @@
+{
+    "done": {
+      "variables": {
+        "lives": {
+          "op": "equal",
+          "reference": -1
+        }
+      }
+    },
+    "reward": {
+      "variables": {
+        "score": {
+          "penalty": 10.0,
+          "reward": 10.0
+        },
+        "section": {
+          "reward": 2000.0
+        },
+        "health": {
+          "penalty": 50.0
+        },
+        "lives": {
+          "penalty": 2000.0
+        }
+      }
+    }
+  }
+  

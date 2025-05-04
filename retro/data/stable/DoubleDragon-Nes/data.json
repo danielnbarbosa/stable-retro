@@ -1,12 +1,44 @@
 {
   "info": {
+    "enemy1_health": {
+      "address": 949,
+      "type": "|u1"
+    },
+    "enemy2_health": {
+      "address": 950,
+      "type": "|u1"
+    },
+    "health": {
+      "address": 948,
+      "type": "|u1"
+    },
     "lives": {
       "address": 67,
       "type": "|i1"
     },
+    "mission": {
+      "address": 1707,
+      "type": "|u1"
+    },
+    "part": {
+      "address": 1708,
+      "type": "|u1"
+    },
     "score": {
       "address": 68,
       "type": "<d3"
+    },
+    "section": {
+      "address": 1288,
+      "type": "|u1"
+    },
+    "section2": {
+      "address": 63,
+      "type": "|u1"
+    },
+    "time": {
+      "address": 1285,
+      "type": "<d2"
     }
   }
 }
