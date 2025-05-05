@@ -4,6 +4,10 @@
       "lives": {
         "op": "equal",
         "reference": 1
+      },
+      "time": {
+        "op": "less-than",
+        "reference": 75
       }
     }
   },

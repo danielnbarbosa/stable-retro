@@ -154,7 +154,7 @@ end
 
 
 function sum_reward ()
-    return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + lives_reward() + health_reward()
-    -- return enemy1_health_reward() + enemy2_health_reward()
+    -- return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + lives_reward() + health_reward()
+    return enemy1_health_reward() + enemy2_health_reward() + health_reward()
     -- return 0
 end
