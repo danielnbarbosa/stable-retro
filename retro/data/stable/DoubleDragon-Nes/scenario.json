@@ -8,6 +8,10 @@
       "time": {
         "op": "less-than",
         "reference": 75
+      },
+      "part": {
+        "op": "equal",
+        "reference": 1
       }
     }
   },

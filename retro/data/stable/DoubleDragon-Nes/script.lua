@@ -22,7 +22,7 @@ function mission_reward ()
     if data.mission > previous_mission then
         local delta = data.mission - previous_mission
         previous_mission = data.mission
-        return delta * 500
+        return delta * 50
     else
         return 0
     end
@@ -37,7 +37,7 @@ function part_reward ()
     elseif data.part > previous_part then
         local delta = data.part - previous_part
         previous_part = data.part
-        return delta * 500
+        return delta * 10
     else
         return 0
     end
@@ -52,7 +52,7 @@ function section_reward ()
     elseif data.section > previous_section then
         local delta = data.section - previous_section
         previous_section = data.section
-        return delta * 500
+        return delta * 2
     else
         return 0
     end
@@ -73,9 +73,9 @@ function enemy1_health_reward ()
         previous_enemy1_health = data.enemy1_health
         -- give an extra reward for killing them
         if data.enemy1_health == 0 then
-            kill_bonus = 20
+            kill_bonus = 4
         end
-        return delta * 5 + kill_bonus
+        return delta + kill_bonus
     else
         return 0
     end
@@ -96,9 +96,9 @@ function enemy2_health_reward ()
         previous_enemy2_health = data.enemy2_health
         -- give an extra reward for killing them
         if data.enemy2_health == 0 then
-            kill_bonus = 20
+            kill_bonus = 4
         end
-        return delta * 5 + kill_bonus
+        return delta + kill_bonus
     else
         return 0
     end
@@ -110,7 +110,7 @@ function score_reward ()
     if data.score > previous_score then
         local delta = data.score - previous_score
         previous_score = data.score
-        return delta * 1
+        return delta * 0.2
     else
         return 0
     end
@@ -124,7 +124,7 @@ function lives_reward ()
     if data.lives < previous_lives then
         local delta = data.lives - previous_lives
         previous_lives = data.lives
-        return delta * 200
+        return delta * 10
     else
         return 0
     end
@@ -145,7 +145,7 @@ function health_reward ()
     elseif data.health < previous_health then
         local delta = data.health - previous_health
         previous_health = data.health
-        return delta * 5
+        return delta
     else
         return 0
     end
@@ -154,7 +154,7 @@ end
 
 
 function sum_reward ()
-    -- return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + lives_reward() + health_reward()
-    return enemy1_health_reward() + enemy2_health_reward() + health_reward()
+    return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + lives_reward() + health_reward()
+    -- return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + health_reward()
     -- return 0
 end

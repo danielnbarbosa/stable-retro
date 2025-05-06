@@ -12,6 +12,10 @@
       "address": 948,
       "type": "|u1"
     },
+    "hi_score": {
+      "address": 52,
+      "type": "<d3"
+    },
     "lives": {
       "address": 67,
       "type": "|i1"
