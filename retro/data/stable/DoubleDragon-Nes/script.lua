@@ -4,9 +4,14 @@ previous_section = 0
 previous_score = 0
 previous_enemy1_health = 0
 previous_enemy2_health = 0
+previous_x_pos = 0
+previous_y_pos = 0
 
 previous_lives = 2
 previous_health = 64
+
+steps_to_reset_life = 40 * 4
+died_n_steps_ago = 10000
 
 -- The game has 4 missions.  Missions are divided into parts.  Parts are divided into sections.
 -- Note that in the code everything is 0 indexed.
@@ -14,6 +19,7 @@ previous_health = 64
 -- Mission 2 (parts-sections): 1-1, 1-2, 1-3, 1-4
 -- Mission 3 (parts-sections): TBD
 -- Mission 4 (parts-sections): TBD
+
 
 -- Rewards
 
@@ -68,7 +74,7 @@ function enemy1_health_reward ()
         previous_enemy1_health = data.enemy1_health
         return 0
      -- return delta of enemy1_health
-    elseif data.enemy1_health < previous_enemy1_health then
+    elseif data.enemy1_health < previous_enemy1_health and not died_recently then
         local delta = previous_enemy1_health - data.enemy1_health
         previous_enemy1_health = data.enemy1_health
         -- give an extra reward for killing them
@@ -91,7 +97,7 @@ function enemy2_health_reward ()
         previous_enemy2_health = data.enemy2_health
         return 0
      -- return delta of enemy2_health
-    elseif data.enemy2_health < previous_enemy2_health then
+    elseif data.enemy2_health < previous_enemy2_health and not died_recently then
         local delta = previous_enemy2_health - data.enemy2_health
         previous_enemy2_health = data.enemy2_health
         -- give an extra reward for killing them
@@ -117,15 +123,61 @@ function score_reward ()
 end
 
 
+function x_pos_reward ()
+    -- TODO: on dying, x_pos resets to start of scenario but previous_x_pos does not
+    -- so there is no x_pos reward until catching up to previous_x_pos
+    -- reward when x_pos increments
+    if data.x_pos == 0 and not died_recently then
+        previous_x_pos = 0
+        return 0
+    elseif data.x_pos > previous_x_pos and not died_recently then
+        local delta = data.x_pos - previous_x_pos
+        previous_x_pos = data.x_pos
+        return delta * 0.03
+    else
+        return 0
+    end
+end
+
+
+function y_pos_reward ()
+    -- reward when y_pos increments
+    -- y_status:
+    --   0 = down below
+    --   1 = up top
+    --   2 = climbing
+    if data.y_pos == 0 then
+        previous_y_pos = 0
+        return 0
+    elseif data.y_pos > previous_y_pos and data.y_status == 2 then
+        local delta = data.y_pos - previous_y_pos
+        previous_y_pos = data.y_pos
+        return delta * 0.06
+    else
+        return 0
+    end
+end
+
+
 -- Penalties
 
 function lives_reward ()
+    -- keep track of when recently died to avoid incorrect rewards when new life starts
+    if died_n_steps_ago < steps_to_reset_life then
+        died_recently = true
+    else
+        died_recently = false
+    end
+    -- print(died_n_steps_ago, steps_to_reset_life, died_recently, data.x_pos, previous_x_pos)
+
     -- penalty when lives decrements
     if data.lives < previous_lives then
         local delta = data.lives - previous_lives
         previous_lives = data.lives
+        died_n_steps_ago = 0
         return delta * 10
     else
+        died_n_steps_ago = died_n_steps_ago + 1
         return 0
     end
 end
@@ -136,7 +188,7 @@ function health_reward ()
 
     -- if health goes to 0 then reset previous_health too
     -- this covers issues like time running out, falling off cliff, and transitioning to next part
-    -- NOTE: this means getting beat to death won't be penalized for the final decrement to 0
+    -- TODO: this means getting beat to death won't be penalized for the final decrement to 0
     -- but this should be covered by the large lives penalty
     if data.health == 0 then
         previous_health = 0
@@ -154,7 +206,6 @@ end
 
 
 function sum_reward ()
-    return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + lives_reward() + health_reward()
-    -- return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + health_reward()
+    return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + x_pos_reward() + y_pos_reward() + lives_reward() + health_reward()
     -- return 0
 end

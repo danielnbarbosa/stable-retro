@@ -36,13 +36,37 @@
       "address": 1288,
       "type": "|u1"
     },
-    "section2": {
+    "section_active": {
       "address": 63,
+      "type": "|u1"
+    },
+    "skill_points": {
+      "address": 65,
+      "type": "<d2"
+    },
+    "skills": {
+      "address": 64,
       "type": "|u1"
     },
     "time": {
       "address": 1285,
       "type": "<d2"
+    },
+    "x_pos": {
+      "address": 223,
+      "type": "<u2"
+    },
+    "y_dst_from_enemy": {
+      "address": 1013,
+      "type": "|u1"
+    },
+    "y_pos": {
+      "address": 891,
+      "type": "<i2"
+    },
+    "y_status": {
+      "address": 869,
+      "type": ">u4"
     }
   }
 }
