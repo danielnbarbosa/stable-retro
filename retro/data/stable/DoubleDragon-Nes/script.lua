@@ -1,6 +1,6 @@
 previous_mission = 0
 previous_part = 0
-previous_section = 0
+previous_screen = 0
 previous_score = 0
 previous_enemy1_health = 0
 previous_enemy2_health = 0
@@ -15,7 +15,7 @@ died_n_steps_ago = 10000
 
 -- The game has 4 missions.  Missions are divided into parts.  Parts are divided into sections.
 -- Note that in the code everything is 0 indexed.
--- Mission 1 (parts-sections): 1-1, 1-2, 1-3, 1-4, 2-1
+-- Mission 1 (parts-sections): 1-1, 1-2, 1-3, 1-4, 1-5, 2-1, 2-2
 -- Mission 2 (parts-sections): 1-1, 1-2, 1-3, 1-4
 -- Mission 3 (parts-sections): TBD
 -- Mission 4 (parts-sections): TBD
@@ -50,14 +50,14 @@ function part_reward ()
 end
 
 
-function section_reward ()
-    -- reward when section increments
-    if data.section == 0 then
-        previous_section = 0
+function screen_reward ()
+    -- reward when screen increments
+    if data.screen == 0 then
+        previous_screen = 0
         return 0
-    elseif data.section > previous_section then
-        local delta = data.section - previous_section
-        previous_section = data.section
+    elseif data.screen > previous_screen then
+        local delta = data.screen - previous_screen
+        previous_screen = data.screen
         return delta * 2
     else
         return 0
@@ -206,6 +206,6 @@ end
 
 
 function sum_reward ()
-    return mission_reward() + part_reward() + section_reward() + enemy1_health_reward() + enemy2_health_reward() + x_pos_reward() + y_pos_reward() + lives_reward() + health_reward()
+    return mission_reward() + part_reward() + screen_reward() + enemy1_health_reward() + enemy2_health_reward() + x_pos_reward() + y_pos_reward() + lives_reward() + health_reward()
     -- return 0
 end

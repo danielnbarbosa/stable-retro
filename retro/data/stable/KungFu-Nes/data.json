@@ -12,6 +12,10 @@
       "address": 95,
       "type": "|u1"
     },
+    "floor_status": {
+      "address": 81,
+      "type": "|u1"
+    },
     "health": {
       "address": 1190,
       "type": "|i1"

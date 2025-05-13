@@ -5,6 +5,14 @@ previous_floor = 0
 previous_xpos_even = 17415
 previous_xpos_odd = 1297
 
+
+-- floor_status
+-- 1 = get ready
+-- 2 = floor active
+-- 3 = floor finished
+-- 5 = cut scene
+
+
 function score_reward ()
     -- return delta of score 
     if data.score > previous_score then
@@ -25,7 +33,7 @@ function health_reward ()
      -- return delta of health
     if data.health < previous_health then
         -- health goes to 0 after finishing the level, but this shouldn't be punished
-        if data.boss_health <= 0 then
+        if data.floor_status == 3 then
             return 0
         else
             local delta = data.health - previous_health
@@ -64,7 +72,7 @@ function floor_reward ()
     if data.floor > previous_floor then
         local delta = data.floor - previous_floor
         previous_floor = data.floor
-        return delta * 50.0
+        return delta * 10.0
     else
         return 0
     end
@@ -90,6 +98,6 @@ end
 
 function sum_reward ()
     -- return score_reward() + health_reward() + boss_health_reward() + floor_reward() + x_pos_reward()
-    return health_reward() + boss_health_reward() + x_pos_reward()
+    return health_reward() + boss_health_reward() + x_pos_reward() + floor_reward()
     -- return 0
 end
