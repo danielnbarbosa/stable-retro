@@ -20,8 +20,9 @@ died_n_steps_ago = 10000
 -- Mission 3 (parts-sections): TBD
 -- Mission 4 (parts-sections): TBD
 
-
--- Rewards
+---------------
+--- Rewards ---
+---------------
 
 function mission_reward ()
     -- reward when mission increments
@@ -111,25 +112,17 @@ function enemy2_health_reward ()
 end
 
 
-function score_reward ()
-    -- reward when score increments
-    if data.score > previous_score then
-        local delta = data.score - previous_score
-        previous_score = data.score
-        return delta * 0.2
-    else
-        return 0
-    end
-end
-
-
 function x_pos_reward ()
-    -- TODO: on dying, x_pos resets to start of scenario but previous_x_pos does not
-    -- so there is no x_pos reward until catching up to previous_x_pos
-    -- reward when x_pos increments
+    -- for passing a mission
     if data.x_pos == 0 and not died_recently then
         previous_x_pos = 0
         return 0
+    -- after dying, x_pos resets to start of scenario
+    -- its briefly at 0 before resetting which is why there is the check
+    elseif data.x_pos < previous_x_pos and data.x_pos ~= 0 and died_recently then
+        previous_x_pos = data.x_pos
+        return 0
+    -- reward when x_pos increments
     elseif data.x_pos > previous_x_pos and not died_recently then
         local delta = data.x_pos - previous_x_pos
         previous_x_pos = data.x_pos
@@ -140,26 +133,9 @@ function x_pos_reward ()
 end
 
 
-function y_pos_reward ()
-    -- reward when y_pos increments
-    -- y_status:
-    --   0 = down below
-    --   1 = up top
-    --   2 = climbing
-    if data.y_pos == 0 then
-        previous_y_pos = 0
-        return 0
-    elseif data.y_pos > previous_y_pos and data.y_status == 2 then
-        local delta = data.y_pos - previous_y_pos
-        previous_y_pos = data.y_pos
-        return delta * 0.06
-    else
-        return 0
-    end
-end
-
-
--- Penalties
+-----------------
+--- Penalties ---
+-----------------
 
 function lives_reward ()
     -- keep track of when recently died to avoid incorrect rewards when new life starts
@@ -204,8 +180,46 @@ function health_reward ()
 end
 
 
+--------------
+--- Unused ---
+--------------
+
+function score_reward ()
+    -- reward when score increments
+    if data.score > previous_score then
+        local delta = data.score - previous_score
+        previous_score = data.score
+        return delta * 0.2
+    else
+        return 0
+    end
+end
+
+
+function y_pos_reward ()
+    -- reward when y_pos increments
+    -- y_status:
+    --   0 = down below
+    --   1 = up top
+    --   2 = climbing
+    if data.y_pos == 0 then
+        previous_y_pos = 0
+        return 0
+    elseif data.y_pos > previous_y_pos and data.y_status == 2 then
+        local delta = data.y_pos - previous_y_pos
+        previous_y_pos = data.y_pos
+        return delta * 0.06
+    else
+        return 0
+    end
+end
+
+
+
+
 
 function sum_reward ()
-    return mission_reward() + part_reward() + screen_reward() + enemy1_health_reward() + enemy2_health_reward() + x_pos_reward() + y_pos_reward() + lives_reward() + health_reward()
+    return mission_reward() + part_reward() + screen_reward() + enemy1_health_reward() + enemy2_health_reward() + x_pos_reward() + lives_reward() + health_reward()
+    -- return x_pos_reward() + lives_reward()
     -- return 0
 end
