@@ -1,5 +1,9 @@
 {
   "info": {
+    "enemies": {
+      "address": 1053,
+      "type": "|u1"
+    },
     "enemy1_health": {
       "address": 949,
       "type": "|u1"
@@ -55,6 +59,14 @@
     "x_pos": {
       "address": 223,
       "type": "<u2"
+    },
+    "x_pos_player": {
+      "address": 90,
+      "type": "|u1"
+    },
+    "x_pos_player_mult": {
+      "address": 98,
+      "type": "|u1"
     },
     "y_dst_enemy1": {
       "address": 1013,

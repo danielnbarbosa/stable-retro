@@ -133,7 +133,14 @@ class Interactive(abc.ABC):
 
             if not self._sync or act is not None:
                 obs, rew, terminated, truncated, _info = self._env.step(act)
-                print(_info, rew)
+
+                ###############################
+                # modify keys_to_watch as needed
+                keys_to_watch = ['x_pos', 'lives', 'health', 'enemy1_health', 'enemy2_health', 'mission', 'part', 'section', 'screen']
+                info_sub = {key: _info[key] for key in keys_to_watch if key in _info}
+                if abs(rew) > 0:
+                    print(keys, info_sub, rew)
+
                 done = terminated or truncated
                 self._image = self.get_image(obs, self._env)
                 self._episode_returns += rew
@@ -143,14 +150,14 @@ class Interactive(abc.ABC):
                 if self._sync:
                     done_int = int(done)  # shorter than printing True/False
                     mess = f"steps={self._steps} episode_steps={self._episode_steps} rew={rew} episode_returns={self._episode_returns} done={done_int}"
-                    print(mess)
+                    #print(mess)
                 elif self._steps % self._tps == 0 or done:
                     episode_returns_delta = (
                         self._episode_returns - self._prev_episode_returns
                     )
                     self._prev_episode_returns = self._episode_returns
                     mess = f"steps={self._steps} episode_steps={self._episode_steps} episode_returns_delta={episode_returns_delta} episode_returns={self._episode_returns}"
-                    print(mess)
+                    #print(mess)
 
                 if done:
                     self._env.reset()

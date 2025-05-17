@@ -21,7 +21,7 @@ in_stage3_2_7 = false
 past_platforms = false
 
 
-debug = false
+debug = true
 
 -- The game has 4 missions.  Missions are divided into parts.  Parts are divided into sections.
 -- Note that in the code everything is 0 indexed.
@@ -50,13 +50,6 @@ end
 
 
 function part_reward ()
-    -- handle transition back from stage 3-3-1 to 3-2-4
-    if previous_mission == 2 and previous_part == 2 and previous_screen == 0 and data.mission == 2 and data.part == 1 and data.section == 3 then
-        transition_stage_3_3_1_to_3_2_4 = true
-    else
-        transition_stage_3_3_1_to_3_2_4 = false
-    end
-
     -- reward when part increments
     if data.part == 0 then
         previous_part = 0
@@ -73,14 +66,10 @@ end
 
 
 function screen_reward ()
-    -- don't reward when moving backward
-    if transition_stage_3_3_1_to_3_2_4 then
-        previous_screen = data.screen
-        return 0
-    elseif data.screen == 0 then
+    -- reward when screen increments
+    if data.screen == 0 then
         previous_screen = 0
         return 0
-    -- reward when screen increments
     elseif data.screen > previous_screen then
         local delta = data.screen - previous_screen
         previous_screen = data.screen
@@ -96,12 +85,10 @@ function enemy1_health_reward ()
     -- reward when enemy1_health decrements
     local kill_bonus = 0
 
-    -- don't reward when moving backward
-    if transition_stage_3_3_1_to_3_2_4 then
-        previous_enemy1_health = data.enemy1_health
-        return 0
-    -- return delta of enemy1_health
-    elseif data.enemy1_health < previous_enemy1_health and not died_recently then
+    -- print(data.enemy1_health, previous_enemy1_health)
+
+     -- return delta of enemy1_health
+    if data.enemy1_health < previous_enemy1_health and not died_recently then
         local delta = previous_enemy1_health - data.enemy1_health
         previous_enemy1_health = data.enemy1_health
         -- give an extra reward for killing them
@@ -121,12 +108,8 @@ function enemy2_health_reward ()
     -- reward when enemy2_health decrements
     local kill_bonus = 0
 
-    -- don't reward when moving backward
-    if transition_stage_3_3_1_to_3_2_4 then
-        previous_enemy2_health = data.enemy2_health
-        return 0
-    -- return delta of enemy2_health
-    elseif data.enemy2_health < previous_enemy2_health and not died_recently then
+     -- return delta of enemy2_health
+    if data.enemy2_health < previous_enemy2_health and not died_recently then
         local delta = previous_enemy2_health - data.enemy2_health
         previous_enemy2_health = data.enemy2_health
         -- give an extra reward for killing them
@@ -143,12 +126,8 @@ end
 
 
 function x_pos_reward ()
-    -- don't reward when moving backward
-    if transition_stage_3_3_1_to_3_2_4 then
-        previous_x_pos = data.x_pos
-        return 0
     -- for passing a mission
-    elseif data.x_pos == 0 and not died_recently then
+    if data.x_pos == 0 and not died_recently then
         previous_x_pos = 0
         return 0
     -- after dying, x_pos resets to start of scenario
@@ -172,8 +151,6 @@ function x_pos_player_reward01 ()
     -- reward for moving player in a specific direction
     -- in stage 3-2-1 needs to move right through the (very painful) stalactites
     -- without a more granular reward will just not advance
-
-    local x_pos_player = data.x_pos_player_mult * 254 + data.x_pos_player
 
     if data.mission == 2 and data.part == 1 and data.section == 0 and data.screen == 0 then
         if x_pos_player <= 104 then
@@ -205,6 +182,7 @@ function lives_reward ()
     else
         died_recently = false
     end
+    -- print(died_n_steps_ago, steps_to_reset_life, died_recently, data.x_pos, previous_x_pos)
 
     -- penalty when lives decrements
     if data.lives < previous_lives then
