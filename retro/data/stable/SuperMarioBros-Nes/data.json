@@ -24,6 +24,10 @@
       "address": 1912,
       "type": "|i1"
     },
+    "size": {
+      "address": 1876,
+      "type": "|u1"
+    },
     "time": {
       "address": 2040,
       "type": ">n3"
@@ -34,6 +38,10 @@
     },
     "xscrollLo": {
       "address": 1820,
+      "type": "|u1"
+    },
+    "y_pos": {
+      "address": 952,
       "type": "|u1"
     }
   }

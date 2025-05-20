@@ -135,11 +135,11 @@ class Interactive(abc.ABC):
                 obs, rew, terminated, truncated, _info = self._env.step(act)
 
                 ###############################
-                # modify keys_to_watch as needed
-                keys_to_watch = ['x_pos', 'lives', 'health', 'enemy1_health', 'enemy2_health', 'mission', 'part', 'section', 'screen']
-                info_sub = {key: _info[key] for key in keys_to_watch if key in _info}
-                if abs(rew) > 0:
-                    print(keys, info_sub, rew)
+                # DoubleDragon modify keys_to_watch as needed
+                #keys_to_watch = ['x_pos', 'lives', 'health', 'enemy1_health', 'enemy2_health', 'mission', 'part', 'section', 'screen']
+                #info_sub = {key: _info[key] for key in keys_to_watch if key in _info}
+                if abs(rew) > 0.2:
+                    print(keys, _info, rew)
 
                 done = terminated or truncated
                 self._image = self.get_image(obs, self._env)
