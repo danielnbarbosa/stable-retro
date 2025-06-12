@@ -32,6 +32,10 @@
       "address": 2040,
       "type": ">n3"
     },
+    "velocity": {
+      "address": 87,
+      "type": "|i1"
+    },
     "xscrollHi": {
       "address": 1818,
       "type": "|u1"
