@@ -4,6 +4,11 @@
       "lives": {
         "op": "equal",
         "reference": -1
+      },
+      "levelHi": {
+        "measurement": "delta",
+        "op": "equal",
+        "reference": 1
       }
     }
   },
@@ -22,7 +27,8 @@
         "reward": 100
       },
       "lives": {
-        "penalty": 25
+        "penalty": 25,
+        "reward": 100
       }
     }
   }
