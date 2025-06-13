@@ -5,7 +5,7 @@
         "op": "equal",
         "reference": -1
       },
-      "levelHi": {
+      "levelLo": {
         "measurement": "delta",
         "op": "equal",
         "reference": 1
