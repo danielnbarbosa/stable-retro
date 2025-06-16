@@ -78,7 +78,7 @@ end
 function lives_penalty ()
     if data.lives < previous_lives then
         local delta = data.lives - previous_lives
-        local reward = delta * 25
+        local reward = delta * 21
         previous_lives = data.lives
         if debug then print('lives_penalty: ', reward) end
         return reward
@@ -88,7 +88,37 @@ function lives_penalty ()
 end
 
 
+function velocity_penalty ()
+    -- 24 is max walk speed, 40 is max run
+    if data.velocity > 24 then
+        local reward = (data.velocity - 24) * -0.004
+        if debug then print('velocity_penalty: ', reward) end
+        return reward
+    else
+        return 0
+    end
+end
+
+
+function ypos_penalty ()
+    -- this acts like a dying penalty
+    if data.yposHi == 1 and data.yposLo >= 200 and data.yposLo < 204 then
+        local reward = -21
+        if debug then print('ypos_penalty: ', reward) end
+        return reward
+    else
+        return 0
+    end
+end
+
+
+function step_penalty ()
+    local reward = -0.02
+    if debug then print('step_penalty: ', reward) end
+    return reward
+end
+
 
 function sum_reward ()
-    return xscrollLo_reward() + score_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + lives_penalty()
+    return xscrollLo_reward() + score_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + ypos_penalty() + step_penalty()
 end

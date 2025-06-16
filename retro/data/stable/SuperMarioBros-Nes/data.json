@@ -28,6 +28,10 @@
       "address": 1876,
       "type": "|u1"
     },
+    "state": {
+      "address": 14,
+      "type": "|u1"
+    },
     "time": {
       "address": 2040,
       "type": ">n3"
@@ -44,7 +48,11 @@
       "address": 1820,
       "type": "|u1"
     },
-    "y_pos": {
+    "yposHi": {
+      "address": 181,
+      "type": "|u1"
+    },
+    "yposLo": {
       "address": 952,
       "type": "|u1"
     }
