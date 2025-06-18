@@ -100,6 +100,7 @@ function stuck_penalty ()
     -- penalize if not making forward progress after some time
     -- helps avoid running out the clock at checkpoints on 1-3, 4-3 and 5-3
     -- doesn't work for exit pipes on 2-2 and 7-2
+    -- on 7-2 is quickly killed by octopus anyway
     if stuck_counter > 400 then
         local reward = -0.1
         if debug then print('stuck_penalty: ', reward) end
@@ -123,8 +124,8 @@ end
 
 
 function stuck_tracker ()
-    -- scroll_lock is 0 at end of -4 stages (bowser)
-    -- and also 2-2 and 7-2 (underwater)
+    -- scroll_lock is 1 at end of -4 stages (bowser)
+    -- and also end of 2-2 and 7-2 (underwater)
     if data.state == 8 and is_dying == false and data.scroll_lock == 0 then
         stuck_counter = stuck_counter + 1
     else
