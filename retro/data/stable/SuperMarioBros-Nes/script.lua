@@ -9,6 +9,8 @@ stuck_counter = 0
 debug = false
 
 
+-- REWARDS --
+
 function xscrollLo_reward ()
     -- only give reward if ypos is above level of a pit
     -- this avoids harvesting reward on big jumps into air
@@ -68,15 +70,6 @@ function lives_reward ()
 end
 
 
-function lives_tracker ()
-    if data.lives < previous_lives then
-        previous_lives = data.lives
-        is_dying = false
-    end
-    return 0
-end
-
-
 function dying_penalty ()
     -- if hit by enemy
     if data.state == 11 and is_dying == false then
@@ -98,8 +91,6 @@ end
 
 function step_penalty ()
     local reward = -0.02
-    stuck_counter = stuck_counter + 1
-    -- print(stuck_counter)
     if debug then print('step_penalty: ', reward) end
     return reward
 end
@@ -107,9 +98,9 @@ end
 
 function stuck_penalty ()
     -- penalize if not making forward progress after some time
-    -- should help with checkpoints on 1-3, 4-3 and 5-3
-    -- as well as exit pipes in 2-2 and 7-2
-    if stuck_counter > 500 then
+    -- helps avoid running out the clock at checkpoints on 1-3, 4-3 and 5-3
+    -- doesn't work for exit pipes on 2-2 and 7-2
+    if stuck_counter > 400 then
         local reward = -0.1
         if debug then print('stuck_penalty: ', reward) end
         return reward
@@ -119,8 +110,33 @@ function stuck_penalty ()
 end
 
 
+
+-- TRACKERS --
+
+function lives_tracker ()
+    if data.lives < previous_lives then
+        previous_lives = data.lives
+        is_dying = false
+    end
+    return 0
+end
+
+
+function stuck_tracker ()
+    -- scroll_lock is 0 at end of -4 stages (bowser)
+    -- and also 2-2 and 7-2 (underwater)
+    if data.state == 8 and is_dying == false and data.scroll_lock == 0 then
+        stuck_counter = stuck_counter + 1
+    else
+        stuck_counter = 0
+    end
+    --print(stuck_counter, data.state, is_dying, data.yposHi, data.yposLo, data.scroll_lock)
+    return 0
+end
+
+
 function sum_reward ()
-    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + dying_penalty() + step_penalty() + lives_tracker()
+    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + dying_penalty() + step_penalty() + stuck_penalty() + lives_tracker() + stuck_tracker()
 end
 
 
@@ -135,8 +151,7 @@ end
 
 
 
--- UNUSED
-
+-- UNUSED --
 
 function score_reward ()
     if data.score > previous_score then

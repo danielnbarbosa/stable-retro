@@ -20,6 +20,10 @@
       "address": 2013,
       "type": ">n6"
     },
+    "scroll_lock": {
+      "address": 1827,
+      "type": "|u1"
+    },
     "scrolling": {
       "address": 1912,
       "type": "|i1"
