@@ -5,10 +5,10 @@
         "op": "equal",
         "reference": -1
       },
-      "levelLo": {
-        "measurement": "delta",
+      "levelHi": {
+        "measurement": "absolute",
         "op": "equal",
-        "reference": 1
+        "reference": 3
       }
     }
   },

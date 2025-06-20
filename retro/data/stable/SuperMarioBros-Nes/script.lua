@@ -70,6 +70,22 @@ function lives_reward ()
 end
 
 
+function pipe_reward ()
+    -- reward for entering a horizontal pipe
+    -- should help finish 2-2 and 7-2 faster
+    -- also takes effect at end of 1-2
+    -- given there are ~50 steps where the condition is true
+    -- this will give ~25 reward in total
+    if data.state == 2 then
+        local reward = 0.5
+        if debug then print('pipe_reward: ', reward) end
+        return reward
+    else
+        return 0
+    end
+end
+
+
 function dying_penalty ()
     -- if hit by enemy
     if data.state == 11 and is_dying == false then
@@ -112,6 +128,8 @@ end
 
 
 
+
+
 -- TRACKERS --
 
 function lives_tracker ()
@@ -137,7 +155,8 @@ end
 
 
 function sum_reward ()
-    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + dying_penalty() + step_penalty() + stuck_penalty() + lives_tracker() + stuck_tracker()
+    -- return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + pipe_reward() + dying_penalty() + step_penalty() + stuck_penalty() + lives_tracker() + stuck_tracker()
+    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + pipe_reward() + dying_penalty() + step_penalty() + lives_tracker()
 end
 
 
