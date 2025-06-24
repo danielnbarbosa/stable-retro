@@ -1,1 +1,21 @@
-scenario.json
+{
+  "done": {
+    "variables": {
+      "lives": {
+        "op": "equal",
+        "reference": -1
+      },
+      "levelHi": {
+        "measurement": "delta",
+        "op": "equal",
+        "reference": 2
+      }
+    }
+  },
+  "reward": {
+      "script": "lua:sum_reward"
+    },
+  "scripts": [
+    "script.lua"
+  ]
+}

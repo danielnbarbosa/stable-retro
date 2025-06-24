@@ -6,9 +6,9 @@
         "reference": -1
       },
       "levelHi": {
-        "measurement": "absolute",
+        "measurement": "delta",
         "op": "equal",
-        "reference": 3
+        "reference": 2
       }
     }
   },

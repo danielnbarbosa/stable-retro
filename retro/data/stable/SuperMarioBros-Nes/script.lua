@@ -156,7 +156,7 @@ end
 
 function sum_reward ()
     -- return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + pipe_reward() + dying_penalty() + step_penalty() + stuck_penalty() + lives_tracker() + stuck_tracker()
-    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + lives_reward() + pipe_reward() + dying_penalty() + step_penalty() + lives_tracker()
+    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + pipe_reward() + dying_penalty() + lives_tracker()
 end
 
 
