@@ -8,7 +8,7 @@
       "levelLo": {
         "measurement": "delta",
         "op": "equal",
-        "reference": 1
+        "reference": 2
       }
     }
   },
