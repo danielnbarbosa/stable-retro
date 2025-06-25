@@ -187,6 +187,16 @@ function lives_done ()
 end
 
 
+function stage_done ()
+    -- stop at stage 7-4
+    if data.levelHi == 6 and data.levelLo == 3 then
+        return true
+    else
+        return false
+    end
+end
+
+
 
 
 -- CALLED --
@@ -197,7 +207,7 @@ end
 
 
 function any_done ()
-    return lives_done() or stage4_4_done()
+    return lives_done() or stage4_4_done() or stage_done()
 end
 
 
