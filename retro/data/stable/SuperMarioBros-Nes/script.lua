@@ -102,25 +102,18 @@ function stage4_4_penalty ()
             return reward
 
         -- second maze junction
-        -- xscroll between 5,240 and 6,20.  ypos between 1,28 and 1,128.
-        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 240) or (data.xscrollHi == 6 and data.xscrollLo <= 20)) and (data.yposHi == 1 and data.yposLo >= 28 and data.yposLo <= 128) then
+        -- xscroll between 5,244 and 6,20.  ypos less than 1,128.
+        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 244) or (data.xscrollHi == 6 and data.xscrollLo <= 20)) and (data.yposHi == 1 and data.yposLo <= 128) then
             local reward = -12.5
             if debug then print('stage4_4_penalty: ', reward) end
             return reward
 
-        -- don't jump after taking upper path at first maze junction
-        -- xscroll between 3,27 and 4,60.  ypos is less than 1,64.
-        elseif ((data.xscrollHi == 3 and data.xscrollLo >= 27) or (data.xscrollHi == 4 and data.xscrollLo <= 60)) and (data.yposHi == 1 and data.yposLo < 64) then
+        -- after taking first junction the world can still loop if mario jumps in certain places
+        -- if xscrollHi goes to 255 while up above this indicates it looped
+        elseif (data.xscrollHi == 255) and (data.yposHi == 1 and data.yposLo == 64) then
             local reward = -5
             if debug then print('stage4_4_penalty: ', reward) end
             return reward
-
-        -- don't jump after taking lower path at second maze junction
-        -- xscroll between 6,216 and 8,30.  ypos is less than 1,176.
-        --elseif ((data.xscrollHi == 6 and data.xscrollLo >= 216) or (data.xscrollHi == 7) or (data.xscrollHi == 8 and data.xscrollLo <= 30)) and (data.yposHi == 1 and data.yposLo < 176) then
-        --    local reward = -5
-        --    if debug then print('stage4_4_penalty: ', reward) end
-        --    return reward
 
         -- after taking second junction the world can still loop if mario jumps in certain places
         -- if xscrollHi goes to 3 while down below this indicates it looped
@@ -162,19 +155,14 @@ function stage4_4_done ()
             return true
 
         -- second maze junction
-        -- xscroll between 5,240 and 6,20.  ypos between 1,28 and 1,128.
-        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 240) or (data.xscrollHi == 6 and data.xscrollLo <= 20)) and (data.yposHi == 1 and data.yposLo >= 28 and data.yposLo <= 128) then
+        -- xscroll between 5,244 and 6,20.  ypos less than 1,128.
+        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 244) or (data.xscrollHi == 6 and data.xscrollLo <= 20)) and (data.yposHi == 1 and data.yposLo <= 128) then
             return true
 
-        -- don't jump after taking upper path at first maze junction
-        -- xscroll between 3,27 and 4,60.  ypos is less than 1,64.
-        elseif ((data.xscrollHi == 3 and data.xscrollLo >= 27) or (data.xscrollHi == 4 and data.xscrollLo <= 60)) and (data.yposHi == 1 and data.yposLo < 64) then
+        -- after taking first junction the world can still loop if mario jumps in certain places
+        -- if xscrollHi goes to 255 while up above this indicates it looped
+        elseif (data.xscrollHi == 255) and (data.yposHi == 1 and data.yposLo == 64) then
             return true
-
-        -- don't jump after taking lower path at second maze junction
-        -- xscroll between 6,216 and 8,30.  ypos is 1,176.
-        --elseif ((data.xscrollHi == 6 and data.xscrollLo >= 216) or (data.xscrollHi == 7) or (data.xscrollHi == 8 and data.xscrollLo <= 30)) and (data.yposHi == 1 and data.yposLo < 176) then
-        --    return true
 
         -- after taking second junction the world can still loop if mario jumps in certain places
         -- if xscrollHi goes to 3 while down below this indicates it looped
