@@ -1,9 +1,11 @@
 previous_xscrollLo = data.xscrollLo
+previous_xscrollHi = data.xscrollHi
 previous_score = data.score
 previous_levelLo = data.levelLo
 previous_levelHi = data.levelHi
 previous_lives = data.lives
 is_dying = false
+is_looped = false
 stuck_counter = 0
 
 debug = false
@@ -131,6 +133,83 @@ function stage4_4_penalty ()
 end
 
 
+function stage7_4_penalty ()
+    if data.levelHi == 6 and data.levelLo == 3 then
+        -- first maze junction
+        -- xscroll between 1,226 and 2,24.  ypos less than 1,112.
+        if ((data.xscrollHi == 1 and data.xscrollLo >= 195) or (data.xscrollHi == 2 and data.xscrollLo <= 24)) and (data.yposHi == 1 and data.yposLo <= 112) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- second maze junction
+        -- xscroll between 2,245 and 3,50.  ypos between 1,156 and 1,176.
+        elseif ((data.xscrollHi == 2 and data.xscrollLo >= 245) or (data.xscrollHi == 3 and data.xscrollLo <= 50)) and (data.yposHi == 1 and data.yposLo >= 156 and data.yposLo <= 176) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+        -- xscroll between 3,40 and 3,90.  ypos between 1,28 and 1,64.
+        elseif (data.xscrollHi == 3 and data.xscrollLo >= 40 and data.xscrollLo <= 90) and (data.yposHi == 1 and data.yposLo >= 28 and data.yposLo <= 64) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- third maze junction
+         -- xscroll between 4,50 and 4,80.  ypos between 1,142 and 1,176.
+        elseif (data.xscrollHi == 4 and data.xscrollLo >= 50 and data.xscrollLo <= 80) and (data.yposHi == 1 and data.yposLo >= 142 and data.yposLo <= 176) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- world can still loop if mario jumps in certain places.
+        -- xscroll between 0,131 and 0,191.  ypos is 1,64.
+        elseif (data.xscrollHi == 0 and data.xscrollLo >= 131 and data.xscrollLo <= 181) and (data.yposHi == 1 and data.yposLo == 64) and data.enemy_present == 0 then
+            local reward = -5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- fourth maze junction
+         -- xscroll between 5,194 and 6.140.  ypos between 1,110 and 1,176.
+        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 194) or (data.xscrollHi == 6 and data.xscrollLo <= 140)) and (data.yposHi == 1 and data.yposLo >= 110 and data.yposLo <= 176) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- fifth maze junction
+        -- xscroll between 7,94 and 7,230.  ypos less than 1,64.
+        elseif (data.xscrollHi == 7 and data.xscrollLo >= 94 and data.xscrollLo <= 230) and (data.yposHi == 1 and data.yposLo <= 64) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+        -- xscroll between 7,91 and 7,190.  ypos between 1,140 and 1,176.
+        elseif (data.xscrollHi == 7 and data.xscrollLo >= 91 and data.xscrollLo <= 190) and (data.yposHi == 1 and data.yposLo >= 140 and data.yposLo <= 176) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- sixth maze junction
+        -- xscroll between 7,230 and 8,78.  ypos between 1,140 and 1,176.
+        elseif ((data.xscrollHi == 7 and data.xscrollLo >= 230) or (data.xscrollHi == 8 and data.xscrollLo <= 78)) and (data.yposHi == 1 and data.yposLo >= 140 and data.yposLo <= 176) then
+            local reward = -12.5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        -- world can still loop if mario jumps in certain places.
+        -- xscroll between 4,150 and 4,250.  ypos is 1,64.
+        elseif (data.xscrollHi == 4 and data.xscrollLo >= 150 and data.xscrollLo <= 250) and (data.yposHi == 1 and data.yposLo == 64) and is_looped == true then
+            local reward = -5
+            if debug then print('stage7_4_penalty: ', reward) end
+            return reward
+
+        else
+            return 0
+        end
+    else
+        return 0
+    end
+end
+
+
 
 -- TRACKERS --
 
@@ -139,6 +218,19 @@ function lives_tracker ()
         previous_lives = data.lives
         is_dying = false
     end
+    return 0
+end
+
+
+function xscrollHi_tracker ()
+    if data.xscrollHi > previous_xscrollHi or data.xscrollHi == 0 then
+        previous_xscrollHi = data.xscrollHi
+        is_looped = false
+    elseif data.xscrollHi < previous_xscrollHi then
+        previous_xscrollHi = data.xscrollHi
+        is_looped = true
+    end
+    --print(previous_xscrollHi, data.xscrollHi, data.xscrollLo, is_looped)
     return 0
 end
 
@@ -178,6 +270,63 @@ function stage4_4_done ()
 end
 
 
+function stage7_4_done ()
+    if data.levelHi == 6 and data.levelLo == 3 then
+        -- first maze junction
+        -- xscroll between 1,226 and 2,24.  ypos less than 1,112.
+        if ((data.xscrollHi == 1 and data.xscrollLo >= 195) or (data.xscrollHi == 2 and data.xscrollLo <= 24)) and (data.yposHi == 1 and data.yposLo <= 112) then
+            return true
+
+        -- second maze junction
+        -- xscroll between 2,245 and 3,50.  ypos between 1,156 and 1,176.
+        elseif ((data.xscrollHi == 2 and data.xscrollLo >= 245) or (data.xscrollHi == 3 and data.xscrollLo <= 50)) and (data.yposHi == 1 and data.yposLo >= 156 and data.yposLo <= 176) then
+            return true
+        -- xscroll between 3,40 and 3,90.  ypos between 1,28 and 1,64.
+        elseif (data.xscrollHi == 3 and data.xscrollLo >= 40 and data.xscrollLo <= 90) and (data.yposHi == 1 and data.yposLo >= 28 and data.yposLo <= 64) then
+            return true
+
+        -- third maze junction
+         -- xscroll between 4,50 and 4,80.  ypos between 1,142 and 1,176.
+        elseif (data.xscrollHi == 4 and data.xscrollLo >= 50 and data.xscrollLo <= 80) and (data.yposHi == 1 and data.yposLo >= 142 and data.yposLo <= 176) then
+            return true
+
+        -- world can still loop if mario jumps in certain places.
+        -- xscroll between 0,131 and 0,191.  ypos is 1,64.
+        elseif (data.xscrollHi == 0 and data.xscrollLo >= 131 and data.xscrollLo <= 181) and (data.yposHi == 1 and data.yposLo == 64) and data.enemy_present == 0 then
+            return true
+
+        -- fourth maze junction
+         -- xscroll between 5,194 and 6.140.  ypos between 1,110 and 1,176.
+        elseif ((data.xscrollHi == 5 and data.xscrollLo >= 194) or (data.xscrollHi == 6 and data.xscrollLo <= 140)) and (data.yposHi == 1 and data.yposLo >= 110 and data.yposLo <= 176) then
+            return true
+
+        -- fifth maze junction
+        -- xscroll between 7,94 and 7,230.  ypos less than 1,64.
+        elseif (data.xscrollHi == 7 and data.xscrollLo >= 94 and data.xscrollLo <= 230) and (data.yposHi == 1 and data.yposLo <= 64) then
+            return true
+        -- xscroll between 7,91 and 7,190.  ypos between 1,140 and 1,176.
+        elseif (data.xscrollHi == 7 and data.xscrollLo >= 91 and data.xscrollLo <= 190) and (data.yposHi == 1 and data.yposLo >= 140 and data.yposLo <= 176) then
+            return true
+
+        -- sixth maze junction
+        -- xscroll between 7,230 and 8,78.  ypos between 1,140 and 1,176.
+        elseif ((data.xscrollHi == 7 and data.xscrollLo >= 230) or (data.xscrollHi == 8 and data.xscrollLo <= 78)) and (data.yposHi == 1 and data.yposLo >= 140 and data.yposLo <= 176) then
+            return true
+
+        -- world can still loop if mario jumps in certain places.
+        -- xscroll between 4,150 and 4,250.  ypos is 1,64.
+        elseif (data.xscrollHi == 4 and data.xscrollLo >= 150 and data.xscrollLo <= 250) and (data.yposHi == 1 and data.yposLo == 64) and is_looped == true then
+            return true
+
+        else
+            return false
+        end
+    else
+        return false
+    end
+end
+
+
 function lives_done ()
     if data.lives == -1 then
         return true
@@ -188,8 +337,8 @@ end
 
 
 function stage_done ()
-    -- stop at stage 7-4
-    if data.levelHi == 6 and data.levelLo == 3 then
+    -- stop at stage 8-4
+    if data.levelHi == 7 and data.levelLo == 3 then
         return true
     else
         return false
@@ -202,12 +351,12 @@ end
 -- CALLED --
 
 function sum_reward ()
-    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + pipe_reward() + dying_penalty() + lives_tracker() + stage4_4_penalty()
+    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + pipe_reward() + dying_penalty() + lives_tracker() + xscrollHi_tracker() + stage4_4_penalty() + stage7_4_penalty()
 end
 
 
 function any_done ()
-    return lives_done() or stage4_4_done() or stage_done()
+    return lives_done() or stage_done() or stage4_4_done() or stage7_4_done()
 end
 
 

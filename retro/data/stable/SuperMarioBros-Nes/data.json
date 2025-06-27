@@ -4,6 +4,10 @@
       "address": 1886,
       "type": "|u1"
     },
+    "enemy_present": {
+      "address": 15,
+      "type": "|u1"
+    },
     "levelHi": {
       "address": 1887,
       "type": "|i1"
