@@ -8,6 +8,10 @@
       "address": 15,
       "type": "|u1"
     },
+    "float_state": {
+      "address": 29,
+      "type": "|u1"
+    },
     "levelHi": {
       "address": 1887,
       "type": "|i1"
@@ -47,6 +51,10 @@
     "velocity": {
       "address": 87,
       "type": "|i1"
+    },
+    "xpos": {
+      "address": 134,
+      "type": "|u1"
     },
     "xscrollHi": {
       "address": 1818,

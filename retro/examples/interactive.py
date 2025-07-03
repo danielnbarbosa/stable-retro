@@ -138,7 +138,7 @@ class Interactive(abc.ABC):
                 # DoubleDragon modify keys_to_watch as needed
                 #keys_to_watch = ['x_pos', 'lives', 'health', 'enemy1_health', 'enemy2_health', 'mission', 'part', 'section', 'screen']
                 #info_sub = {key: _info[key] for key in keys_to_watch if key in _info}
-                if abs(rew) > 0.2:
+                if abs(rew) > 0.0:
                     print(keys, _info, rew)
 
                 done = terminated or truncated
