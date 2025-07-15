@@ -8,6 +8,10 @@
       "address": 15,
       "type": "|u1"
     },
+    "enemy_state": {
+      "address": 30,
+      "type": "|u1"
+    },
     "float_state": {
       "address": 29,
       "type": "|u1"
@@ -42,6 +46,10 @@
     },
     "state": {
       "address": 14,
+      "type": "|u1"
+    },
+    "swimming": {
+      "address": 1796,
       "type": "|u1"
     },
     "time": {

@@ -95,6 +95,10 @@ function dying_penalty ()
     -- if time runs out
     elseif data.state == 11 and data.time == 0 and is_dying == false then
         local reward = -5
+        --- increase the die_timeout penalty to -100 on stage 8-4
+        if data.levelHi == 7 and data.levelLo == 3 then
+            reward = -100
+        end
         if debug then print('dying_penalty: ', reward) end
         --print('!!!!!!!!!! TIMEOUT !!!!!!!!!!!!', data.levelHi + 1, '-', data.levelLo + 1)
         is_dying = true
@@ -266,12 +270,10 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-       -- don't loop, die
+       -- don't loop, wall
         elseif (data.xscrollHi == 0 or data.xscrollHi == 1) and (data.xpos >= 90 and data.xpos < 130) and (data.yposHi == 1 and data.yposLo <= 128) and data.enemy_present == 0 and data.time ~= 0 then
-            local reward = -7.5
-            data.time = 0
-            if debug then print('stage8_4_penalty: ', reward) end
-            return reward
+            data.velocity = -1
+            return 0
 
 
         ------- section 2 -------
@@ -310,12 +312,10 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-        -- don't loop, die
+        -- don't loop, wall
         elseif (data.xscrollHi == 9 and data.xpos >= 166 and data.xpos <= 216) and (data.yposHi == 1 and data.yposLo <= 176) and data.time ~= 0 then
-            local reward = -7.5
-            data.time = 0
-            if debug then print('stage8_4_penalty: ', reward) end
-            return reward
+            data.velocity = -1
+            return 0
 
 
         ------- section 3 -------
@@ -326,12 +326,10 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-       -- don't loop, die
+       -- don't loop, wall
         elseif (data.xscrollHi == 14 and data.xpos >= 140 and data.xpos <= 190) and (data.yposHi == 1 and data.yposLo <= 176) and data.time ~= 0 then
-            local reward = -7.5
-            data.time = 0
-            if debug then print('stage8_4_penalty: ', reward) end
-            return reward
+            data.velocity = -1
+            return 0
 
 
         ------- section 4 -------
