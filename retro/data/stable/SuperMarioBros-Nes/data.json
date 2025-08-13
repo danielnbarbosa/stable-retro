@@ -28,6 +28,14 @@
       "address": 1882,
       "type": "|i1"
     },
+    "progress": {
+      "address": 1836,
+      "type": "|u1"
+    },
+    "progress2": {
+      "address": 1839,
+      "type": "|u1"
+    },
     "score": {
       "address": 2013,
       "type": ">n6"

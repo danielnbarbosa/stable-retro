@@ -8,8 +8,6 @@ is_dying = false
 is_looped = false
 got_high_pipe_reward01 = false
 got_high_pipe_reward02 = false
-got_high_pipe_reward03 = false
-got_high_pipe_reward04 = false
 got_underwater_reward01 = false
 got_underwater_reward02 = false
 
@@ -69,22 +67,6 @@ function levelHi_reward ()
 end
 
 
-function pipe_reward ()
-    -- reward for entering a horizontal pipe
-    -- should help finish 2-2 and 7-2 faster
-    -- also takes effect at end of 1-2
-    -- given there are ~50 steps where the condition is true
-    -- this will give ~25 reward in total
-    if data.state == 2 then
-        local reward = 0.5
-        if debug then print('pipe_reward: ', reward) end
-        return reward
-    else
-        return 0
-    end
-end
-
-
 function dying_penalty ()
     -- if hit by enemy
     if data.state == 11 and data.time ~= 0 and is_dying == false then
@@ -95,10 +77,6 @@ function dying_penalty ()
     -- if time runs out
     elseif data.state == 11 and data.time == 0 and is_dying == false then
         local reward = -5
-        --- increase the die_timeout penalty to -100 on stage 8-4
-        if data.levelHi == 7 and data.levelLo == 3 then
-            reward = -100
-        end
         if debug then print('dying_penalty: ', reward) end
         --print('!!!!!!!!!! TIMEOUT !!!!!!!!!!!!', data.levelHi + 1, '-', data.levelLo + 1)
         is_dying = true
@@ -270,10 +248,12 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-       -- don't loop, wall
+       -- don't loop, die
         elseif (data.xscrollHi == 0 or data.xscrollHi == 1) and (data.xpos >= 90 and data.xpos < 130) and (data.yposHi == 1 and data.yposLo <= 128) and data.enemy_present == 0 and data.time ~= 0 then
-            data.velocity = -1
-            return 0
+            local reward = -7.5
+            data.time = 0
+            if debug then print('stage8_4_penalty: ', reward) end
+            return reward
 
 
         ------- section 2 -------
@@ -284,38 +264,26 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-        -- get up to block
-        --elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo <= 110) and data.float_state == 1 and got_high_pipe_reward01 == false then
-        --    local reward = 10
-        --    got_high_pipe_reward01 = true
-        --    if debug then print('stage8_4_penalty: ', reward) end
-        --    return reward
-
         -- get on top of block
-        elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo == 112) and data.float_state == 0 and got_high_pipe_reward02 == false then
+        elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo == 112) and data.float_state == 0 and got_high_pipe_reward01 == false then
+            local reward = 20
+            got_high_pipe_reward01 = true
+            if debug then print('stage8_4_penalty: ', reward) end
+            return reward
+
+        -- get on top of high pipe
+        elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo == 64) and data.float_state == 0 and got_high_pipe_reward02 == false then
             local reward = 20
             got_high_pipe_reward02 = true
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-        -- get up to high pipe
-        --elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo <= 62) and data.float_state == 1 and got_high_pipe_reward03 == false then
-        --    local reward = 10
-        --    got_high_pipe_reward03 = true
-        --    if debug then print('stage8_4_penalty: ', reward) end
-        --    return reward
-
-        -- get on top of high pipe
-        elseif data.xscrollHi == 9 and (data.yposHi == 1 and data.yposLo == 64) and data.float_state == 0 and got_high_pipe_reward04 == false then
-            local reward = 20
-            got_high_pipe_reward04 = true
+        -- don't loop, die
+        elseif (data.xscrollHi == 9 and data.xpos >= 166 and data.xpos <= 216) and (data.yposHi == 1 and data.yposLo <= 176) and data.time ~= 0 then
+            local reward = -7.5
+            data.time = 0
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
-
-        -- don't loop, wall
-        elseif (data.xscrollHi == 9 and data.xpos >= 166 and data.xpos <= 216) and (data.yposHi == 1 and data.yposLo <= 176) and data.time ~= 0 then
-            data.velocity = -1
-            return 0
 
 
         ------- section 3 -------
@@ -326,10 +294,12 @@ function stage8_4_penalty ()
             if debug then print('stage8_4_penalty: ', reward) end
             return reward
 
-       -- don't loop, wall
+       -- don't loop, die
         elseif (data.xscrollHi == 14 and data.xpos >= 140 and data.xpos <= 190) and (data.yposHi == 1 and data.yposLo <= 176) and data.time ~= 0 then
-            data.velocity = -1
-            return 0
+            local reward = -7.5
+            data.time = 0
+            if debug then print('stage8_4_penalty: ', reward) end
+            return reward
 
 
         ------- section 4 -------
@@ -370,17 +340,6 @@ function stage8_4_penalty ()
 end
 
 
-function checkpoint_penalty ()
-    -- mario is unable to proceed from checkpoints at 1-3, 4-3 and 5-3
-    -- if on one of these level and he dies past a checkpoint, restart at start of level instead of the checkpoint
-    if (data.levelHi == 0 or data.levelHi == 3 or data.levelHi == 4) and data.levelLo == 2 and data.xscrollHi >= 4 and data.state == 6 then
-        data.xscrollHi = 0
-        return 0
-    else
-        return 0
-    end
-end
-
 -- TRACKERS --
 
 function lives_tracker ()
@@ -400,7 +359,6 @@ function xscrollHi_tracker ()
         previous_xscrollHi = data.xscrollHi
         is_looped = true
     end
-    --print(previous_xscrollHi, data.xscrollHi, data.xscrollLo, is_looped)
     return 0
 end
 
@@ -419,8 +377,8 @@ end
 
 
 function stage_done ()
-    -- stop at stage 8-4
-    if data.levelHi == 7 and data.levelLo == 3 then
+    -- stop at stage 3-1
+    if data.levelHi == 2 and data.levelLo == 0 then
         return true
     else
         return false
@@ -445,12 +403,12 @@ end
 -- CALLED --
 
 function sum_reward ()
-    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + pipe_reward() + dying_penalty() + lives_tracker() + xscrollHi_tracker() + stage4_4_penalty() + stage7_4_penalty() + stage8_4_penalty() + checkpoint_penalty()
+    return xscrollLo_reward() + levelLo_reward() + levelHi_reward() + dying_penalty() + lives_tracker() + xscrollHi_tracker() + stage4_4_penalty() + stage7_4_penalty() + stage8_4_penalty()
 end
 
 
 function any_done ()
-    return lives_done() or game_done()
+    return lives_done() or game_done() or stage_done()
 end
 
 
